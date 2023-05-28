@@ -1,0 +1,121 @@
+module regfile (
+    input clk , //clock
+    input rst, //reset
+    input ra[4],
+    input rb[4],
+    input rc[4],
+    input we,
+    input data[16],
+
+
+    output ra_data[16],
+    output rb_data[16],
+
+    output player_score[8],
+    output player_pos[2],
+    output timer[6], // 60 seconds 
+
+    output tree_seg1[2],
+    output tree_seg2[2],
+    output tree_seg3[2],
+    output tree_seg4[2],
+    output tree_seg5[2],
+    output tree_seg6[2],
+    output tree_seg7[2],
+    output tree_seg8[2]
+
+
+) {
+    .clk(clk) { 
+      .rst(rst) {
+    dff reg_player_score[8]; // player score: max score 256
+    dff reg_timer[6](#INIT(0)); // timer: 60 seconds
+    dff reg_player_pos[2]; // player position: 1 for left, 2 for right
+    dff reg_tree_seg1[2]; // Tree Segment 1: 0 for no branch, 1 for left branch, 2 for right branch
+    dff reg_tree_seg2[2]; // Tree Segment 2: 0 for no branch, 1 for left branch, 2 for right branch
+    dff reg_tree_seg3[2]; // Tree Segment 3: 0 for no branch, 1 for left branch, 2 for right branch
+    dff reg_tree_seg4[2]; // Tree Segment 4: 0 for no branch, 1 for left branch, 2 for right branch
+    dff reg_tree_seg5[2]; // Tree Segment 5: 0 for no branch, 1 for left branch, 2 for right branch
+    dff reg_tree_seg6[2]; // Tree Segment 6: 0 for no branch, 1 for left branch, 2 for right branch
+    dff reg_tree_seg7[2]; // Tree Segment 7: 0 for no branch, 1 for left branch, 2 for right branch
+    dff reg_tree_seg8[2]; // Tree Segment 8: 0 for no branch, 1 for left branch, 2 for right branch
+    dff reg_temp[5][16]; // Temp Registers:  temporary 16 bit registers
+    }
+  }
+
+always {
+    ra_data = 0;
+    rb_data = 0;
+
+    if (we) {
+
+        case(rc) {
+            b0000: reg_player_score.d = data[7:0];
+            b0001: reg_timer.d = data[5:0];
+            b0010: reg_player_pos.d = data[1:0];
+            b0011: reg_tree_seg1.d = data[1:0];
+            b0100: reg_tree_seg2.d = data[1:0];
+            b0101: reg_tree_seg3.d = data[1:0];
+            b0110: reg_tree_seg4.d = data[1:0];
+            b0111: reg_tree_seg5.d = data[1:0];
+            b1000: reg_tree_seg6.d = data[1:0];
+            b1001: reg_tree_seg7.d = data[1:0];
+            b1010: reg_tree_seg8.d = data[1:0];
+            b1011: reg_temp.d[0] = data;
+            b1100: reg_temp.d[1] = data;
+            b1101: reg_temp.d[2] = data;
+            b1110: reg_temp.d[3] = data;
+            b1111: reg_temp.d[4] = data;
+        }
+    }
+    case (ra){
+        b0000: ra_data[7:0] = reg_player_score.q;
+        b0001: ra_data[5:0] = reg_timer.q;
+        b0010: ra_data[1:0] = reg_player_pos.q;
+        b0011: ra_data[1:0] = reg_tree_seg1.q;
+        b0100: ra_data[1:0] = reg_tree_seg2.q;
+        b0101: ra_data[1:0] = reg_tree_seg3.q;
+        b0110: ra_data[1:0] = reg_tree_seg4.q;
+        b0111: ra_data[1:0] = reg_tree_seg5.q;
+        b1000: ra_data[1:0] = reg_tree_seg6.q; 
+        b1001: ra_data[1:0] = reg_tree_seg7.q;
+        b1010: ra_data[1:0] = reg_tree_seg8.q;
+        b1011: ra_data = reg_temp.q[0];
+        b1100: ra_data = reg_temp.q[1]; 
+        b1101: ra_data = reg_temp.q[2];
+        b1110: ra_data = reg_temp.q[3];  
+        b1111: ra_data = reg_temp.q[4];
+    }
+
+    case (rb){
+        b0000: rb_data[7:0] = reg_player_score.q;
+        b0001: rb_data[5:0] = reg_timer.q;
+        b0010: rb_data[1:0] = reg_player_pos.q;
+        b0011: rb_data[1:0] = reg_tree_seg1.q;
+        b0100: rb_data[1:0] = reg_tree_seg2.q;
+        b0101: rb_data[1:0] = reg_tree_seg3.q;
+        b0110: rb_data[1:0] = reg_tree_seg4.q;
+        b0111: rb_data[1:0] = reg_tree_seg5.q;
+        b1000: rb_data[1:0] = reg_tree_seg6.q; 
+        b1001: rb_data[1:0] = reg_tree_seg7.q;
+        b1010: rb_data[1:0] = reg_tree_seg8.q;
+        b1011: rb_data = reg_temp.q[0];
+        b1100: rb_data = reg_temp.q[1]; 
+        b1101: rb_data = reg_temp.q[2];
+        b1110: rb_data = reg_temp.q[3];  
+        b1111: rb_data = reg_temp.q[4];
+    }
+    player_score = reg_player_score.q;
+    timer = reg_timer.q;
+    player_pos = reg_player_pos.q; 
+
+    tree_seg1 = reg_tree_seg1.q;
+    tree_seg2 = reg_tree_seg2.q;
+    tree_seg3 = reg_tree_seg3.q;
+    tree_seg4 = reg_tree_seg4.q;
+    tree_seg5 = reg_tree_seg5.q;
+    tree_seg6 = reg_tree_seg6.q;
+    tree_seg7 = reg_tree_seg7.q;
+    tree_seg8 = reg_tree_seg8.q;
+}
+}

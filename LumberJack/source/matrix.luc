@@ -1,0 +1,128 @@
+module matrix (
+    input clk,  // clock
+
+    input tree_seg1[2],
+    input tree_seg2[2],
+    input tree_seg3[2],
+    input tree_seg4[2],
+    input tree_seg5[2],
+    input tree_seg6[2],
+    input tree_seg7[2],
+    input tree_seg8[2],
+
+    output outclk,
+    output din,
+    output cs
+  ) {
+
+  
+  const CHAIN = 4; 
+  const SPEED = 5;
+  sig rst;                  // reset signal
+  max7219_driver max7219_driver(#CHAIN(CHAIN), #SPEED(SPEED), .clk(clk), .rst(rst)); 
+//  reset_conditioner reset_cond(.clk(clk));
+  
+  
+  const B = b0110;
+  const T = b1111;
+  const E = b0000;
+  const PIXELS = {{E,E,E,T,T,E,E,E}, {B,B,B,T,T,E,E,E}, {E,E,E,T,T,B,B,B}};
+  
+  
+  
+ // const TESTWORDS = 
+ /// {$reverse({ c{c{B,E,E,E},c{B,E,E,E}}, 
+  //            c{c{B,E,E,E},c{B,E,E,E}}, 
+    //          c{c{B,E,E,E},c{B,E,E,E}},
+      //        c{c{T,T,T,T},c{T,T,T,T}}, 
+        //      c{c{T,T,T,T},c{T,T,T,T}}, 
+          //    c{c{E,B,E,B},c{E,B,E,B}}, 
+            //  c{c{E,B,E,B},c{E,B,E,B}}, 
+              //c{c{E,B,E,B},c{E,B,E,B}}}),
+                   //  $reverse({ c{c{E,B,E,B},c{E,B,E,B}}, c{c{E,B,E,B},c{E,B,E,B}}, c{c{E,B,E,B},c{E,B,E,B}},c{c{T,T,T,T},c{T,T,T,T}}, c{c{T,T,T,T},c{T,T,T,T}}, c{c{B,E,E,E},c{B,E,E,E}}, c{c{B,E,E,E},c{B,E,E,E}}, c{c{B,E,E,E},c{B,E,E,E}}})};
+    
+//  const TESTWORDS = {({ c{c{PIXELS[tree_seg1][0],PIXELS[tree_seg2][0],PIXELS[tree_seg3][0],PIXELS[tree_seg4][0]},c{PIXELS[tree_seg5][0],PIXELS[tree_seg6][0],PIXELS[tree_seg7][0],PIXELS[tree_seg8][0]}}, 
+//          c{c{PIXELS[tree_seg1][1],PIXELS[tree_seg2][1],PIXELS[tree_seg3][1],PIXELS[tree_seg4][1]},c{PIXELS[tree_seg5][1],PIXELS[tree_seg6][1],PIXELS[tree_seg7][1],PIXELS[tree_seg8][1]}}, 
+//        c{c{PIXELS[tree_seg1][2],PIXELS[tree_seg2][2],PIXELS[tree_seg3][2],PIXELS[tree_seg4][2]},c{PIXELS[tree_seg5][2],PIXELS[tree_seg6][2],PIXELS[tree_seg7][2],PIXELS[tree_seg8][2]}},
+//        c{c{PIXELS[tree_seg1][3],PIXELS[tree_seg2][3],PIXELS[tree_seg3][3],PIXELS[tree_seg4][3]},c{PIXELS[tree_seg5][3],PIXELS[tree_seg6][3],PIXELS[tree_seg7][3],PIXELS[tree_seg8][3]}}, 
+//        c{c{PIXELS[tree_seg1][4],PIXELS[tree_seg2][4],PIXELS[tree_seg3][4],PIXELS[tree_seg4][4]},c{PIXELS[tree_seg5][4],PIXELS[tree_seg6][4],PIXELS[tree_seg7][4],PIXELS[tree_seg8][4]}}, c{c{PIXELS[tree_seg1][5],PIXELS[tree_seg2][5],PIXELS[tree_seg3][5],PIXELS[tree_seg4][5]},c{PIXELS[tree_seg5][5],PIXELS[tree_seg6][5],PIXELS[tree_seg7][5],PIXELS[tree_seg8][5]}}, c{c{PIXELS[tree_seg1][6],PIXELS[tree_seg2][6],PIXELS[tree_seg3][6],PIXELS[tree_seg4][6]},c{PIXELS[tree_seg5][6],PIXELS[tree_seg6][6],PIXELS[tree_seg7][6],PIXELS[tree_seg8][6]}}, c{c{PIXELS[tree_seg1][7],PIXELS[tree_seg2][7],PIXELS[tree_seg3][7],PIXELS[tree_seg4][7]},c{PIXELS[tree_seg5][7],PIXELS[tree_seg6][7],PIXELS[tree_seg7][7],PIXELS[tree_seg8][7]}}})};
+                    //$reverse({ c{c{PIXELS[1][0],PIXELS[0][0],PIXELS[0][0],PIXELS[0][0]},c{PIXELS[0][0],PIXELS[0][0],PIXELS[0][0],PIXELS[0][0]}}, c{c{PIXELS[0][1],PIXELS[0][1],PIXELS[0][1],PIXELS[0][1]},c{PIXELS[0][1],PIXELS[0][1],PIXELS[0][1],PIXELS[0][1]}}, c{c{PIXELS[0][2],PIXELS[0][2],PIXELS[0][2],PIXELS[0][2]},c{PIXELS[0][2],PIXELS[0][2],PIXELS[0][2],PIXELS[0][2]}},c{c{PIXELS[0][3],PIXELS[0][3],PIXELS[0][3],PIXELS[0][3]},c{PIXELS[0][3],PIXELS[0][3],PIXELS[0][3],PIXELS[0][3]}}, c{c{PIXELS[0][4],PIXELS[0][4],PIXELS[0][4],PIXELS[0][4]},c{PIXELS[0][4],PIXELS[0][4],PIXELS[0][4],PIXELS[0][4]}}, c{c{PIXELS[0][5],PIXELS[0][5],PIXELS[0][5],PIXELS[0][5]},c{PIXELS[0][5],PIXELS[0][5],PIXELS[0][5],PIXELS[0][5]}}, c{c{PIXELS[0][6],PIXELS[0][6],PIXELS[0][6],PIXELS[0][6]},c{PIXELS[0][6],PIXELS[0][6],PIXELS[0][6],PIXELS[0][6]}}, c{c{PIXELS[0][7],PIXELS[0][7],PIXELS[0][7],PIXELS[0][7]},c{PIXELS[0][7],PIXELS[0][7],PIXELS[0][7],PIXELS[0][7]}}})};
+
+  
+  dff done(#INIT(0),.clk(clk));
+  dff sample_index(#INIT(0), .clk(clk));
+  counter delay(#SIZE(1), #DIV(27),.rst(rst), .clk(clk));
+  edge_detector delay_edge(#RISE(1), #FALL(0), .clk(clk), .in(delay.value));
+  
+    dff display[8][32](.clk(clk), .rst(rst));
+    sig seg1[8][4];
+    sig seg2[8][4];
+    sig seg3[8][4];
+    sig seg4[8][4];
+    sig seg5[8][4];
+    sig seg6[8][4];
+    sig seg7[8][4];
+    sig seg8[8][4];
+    
+  
+  always {
+  
+        seg1 = PIXELS[tree_seg1];
+        seg2 = PIXELS[tree_seg2];
+        seg3 = PIXELS[tree_seg3];
+        seg4 = PIXELS[tree_seg4];
+        seg5 = PIXELS[tree_seg5];
+        seg6 = PIXELS[tree_seg6];
+        seg7 = PIXELS[tree_seg7];
+        seg8 = PIXELS[tree_seg8];
+    
+    display.d = {c{seg1[0], seg2[0], seg3[0], seg4[0], seg5[0], seg6[0], seg7[0], seg8[0]},
+          c{seg1[1], seg2[1], seg3[1], seg4[1], seg5[1], seg6[1], seg7[1], seg8[1]},
+          c{seg1[2], seg2[2], seg3[2], seg4[2], seg5[2], seg6[2], seg7[2], seg8[2]},
+          c{seg1[3], seg2[3], seg3[3], seg4[3], seg5[3], seg6[3], seg7[3], seg8[3]},
+          c{seg1[4], seg2[4], seg3[4], seg4[4], seg5[4], seg6[4], seg7[4], seg8[4]},
+          c{seg1[5], seg2[5], seg3[5], seg4[5], seg5[5], seg6[5], seg7[5], seg8[5]},
+          c{seg1[6], seg2[6], seg3[6], seg4[6], seg5[6], seg6[6], seg7[6], seg8[6]},
+          c{seg1[7], seg2[7], seg3[7], seg4[7], seg5[7], seg6[7], seg7[7], seg8[7]}};
+      
+      
+    
+
+    //$reverse({ c{c{PIXELS[tree_seg1][0],PIXELS[tree_seg2][0],PIXELS[tree_seg3][0],PIXELS[tree_seg4][0]},c{PIXELS[tree_seg5][0],PIXELS[tree_seg6][0],PIXELS[tree_seg7][0],PIXELS[tree_seg8][0]}}, c{c{PIXELS[tree_seg1][1],PIXELS[tree_seg2][1],PIXELS[tree_seg3][1],PIXELS[tree_seg4][1]},c{PIXELS[tree_seg5][1],PIXELS[tree_seg6][1],PIXELS[tree_seg7][1],PIXELS[tree_seg8][1]}}, c{c{PIXELS[tree_seg1][2],PIXELS[tree_seg2][2],PIXELS[tree_seg3][2],PIXELS[tree_seg4][2]},c{PIXELS[tree_seg5][2],PIXELS[tree_seg6][2],PIXELS[tree_seg7][2],PIXELS[tree_seg8][2]}},c{c{PIXELS[tree_seg1][3],PIXELS[tree_seg2][3],PIXELS[tree_seg3][3],PIXELS[tree_seg4][3]},c{PIXELS[tree_seg5][3],PIXELS[tree_seg6][3],PIXELS[tree_seg7][3],PIXELS[tree_seg8][3]}}, c{c{PIXELS[tree_seg1][4],PIXELS[tree_seg2][4],PIXELS[tree_seg3][4],PIXELS[tree_seg4][4]},c{PIXELS[tree_seg5][4],PIXELS[tree_seg6][4],PIXELS[tree_seg7][4],PIXELS[tree_seg8][4]}}, c{c{PIXELS[tree_seg1][5],PIXELS[tree_seg2][5],PIXELS[tree_seg3][5],PIXELS[tree_seg4][5]},c{PIXELS[tree_seg5][5],PIXELS[tree_seg6][5],PIXELS[tree_seg7][5],PIXELS[tree_seg8][5]}}, c{c{PIXELS[tree_seg1][6],PIXELS[tree_seg2][6],PIXELS[tree_seg3][6],PIXELS[tree_seg4][6]},c{PIXELS[tree_seg5][6],PIXELS[tree_seg6][6],PIXELS[tree_seg7][6],PIXELS[tree_seg8][6]}}, c{c{PIXELS[tree_seg1][7],PIXELS[tree_seg2][7],PIXELS[tree_seg3][7],PIXELS[tree_seg4][7]},c{PIXELS[tree_seg5][7],PIXELS[tree_seg6][7],PIXELS[tree_seg7][7],PIXELS[tree_seg8][7]}}})};
+                    //$reverse({ c{c{PIXELS[1][0],PIXELS[0][0],PIXELS[0][0],PIXELS[0][0]},c{PIXELS[0][0],PIXELS[0][0],PIXELS[0][0],PIXELS[0][0]}}, c{c{PIXELS[0][1],PIXELS[0][1],PIXELS[0][1],PIXELS[0][1]},c{PIXELS[0][1],PIXELS[0][1],PIXELS[0][1],PIXELS[0][1]}}, c{c{PIXELS[0][2],PIXELS[0][2],PIXELS[0][2],PIXELS[0][2]},c{PIXELS[0][2],PIXELS[0][2],PIXELS[0][2],PIXELS[0][2]}},c{c{PIXELS[0][3],PIXELS[0][3],PIXELS[0][3],PIXELS[0][3]},c{PIXELS[0][3],PIXELS[0][3],PIXELS[0][3],PIXELS[0][3]}}, c{c{PIXELS[0][4],PIXELS[0][4],PIXELS[0][4],PIXELS[0][4]},c{PIXELS[0][4],PIXELS[0][4],PIXELS[0][4],PIXELS[0][4]}}, c{c{PIXELS[0][5],PIXELS[0][5],PIXELS[0][5],PIXELS[0][5]},c{PIXELS[0][5],PIXELS[0][5],PIXELS[0][5],PIXELS[0][5]}}, c{c{PIXELS[0][6],PIXELS[0][6],PIXELS[0][6],PIXELS[0][6]},c{PIXELS[0][6],PIXELS[0][6],PIXELS[0][6],PIXELS[0][6]}}, c{c{PIXELS[0][7],PIXELS[0][7],PIXELS[0][7],PIXELS[0][7]},c{PIXELS[0][7],PIXELS[0][7],PIXELS[0][7],PIXELS[0][7]}}})};
+
+
+    max7219_driver.new = 0;
+    
+    // at first, it will show DEADBEEF
+    //max7219_driver.segment_values = TESTWORDS[sample_index.q]; // topmost row will display B for [1] or D for [0]
+    max7219_driver.segment_values = display.q;
+
+
+  
+    
+    
+    
+    // This is a test code, do not copy blindly 
+    // check if done, display a new value immediately
+    if (done.q == 0){
+      done.d = max7219_driver.done; 
+    }
+    
+    if (done.q & delay_edge.out) { // only change when ~1 second has passed
+      sample_index.d = sample_index.q + 1;
+      max7219_driver.new = 1; // if new == 1, max7219 will refresh
+      done.d = 0; // reset, so it loops back up
+    }
+    
+    
+    // actual output
+    din = max7219_driver.max7219_data; // A45 
+    cs = max7219_driver.max7219_load; // A46
+    outclk = max7219_driver.max7219_clock; // A6
+
+
+    
+    
+  }
+}

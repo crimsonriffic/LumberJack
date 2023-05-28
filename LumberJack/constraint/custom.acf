@@ -1,0 +1,45 @@
+pin clk CLOCK;
+clock clk 100MHz;
+
+pin rst_n RESET;
+
+//pin led[0] LED
+// flip the Tx/Rx lines
+pin usb_rx USB_TX;
+pin usb_tx USB_RX;
+
+
+//led matrix (used to be called io_seg1,3,4)
+pin matrixout[0] A6; //clk
+pin matrixout[1] A46; //cs chip select
+pin matrixout[2] A45; //din
+
+//reset button
+pin start_button A33;
+
+//player buttons
+pin left_button A42; 
+pin right_button A43;
+
+pin three_digit_seg[0] B28 ; // A IS 11
+pin three_digit_seg[1] B31 ; // B IS 7
+pin three_digit_seg[2] B34 ; // C IS 4
+pin three_digit_seg[3] B37 ; // D IS 2
+pin three_digit_seg[4] B40 ; // E IS 1
+pin three_digit_seg[5] B43 ; // F IS 10
+pin three_digit_seg[6] B46 ; // G IS 5
+pin three_digit_sel[0] B18 ; // First Digit from right 8
+pin three_digit_sel[1] B21 ; // Second Digit 9
+pin three_digit_sel[2] B24 ; // Most left digit 12
+pin four_digit_seg[0] C28 ; // A IS 11
+pin four_digit_seg[1] C31 ; // B IS 7
+pin four_digit_seg[2] C34 ; // C IS 4
+pin four_digit_seg[3] C37 ; // D IS 2
+pin four_digit_seg[4] C40 ; // E IS 1
+pin four_digit_seg[5] C43 ; // F IS 10
+pin four_digit_seg[6] C46 ; // G IS 5
+pin four_digit_sel[0] C36 ; // First Digit from right 6
+pin four_digit_sel[1] C33 ; // Second Digit 8
+pin four_digit_sel[2] C30 ; // Third Digit 9
+pin four_digit_sel[3] C27 ; // Most left digit 12
+
