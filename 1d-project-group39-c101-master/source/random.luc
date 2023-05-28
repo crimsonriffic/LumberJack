@@ -1,0 +1,39 @@
+module random
+#(
+SEED = 128h843233523a613966423b622562592c62: SEED.WIDTH == 128 && SEED[95:0] != 0
+  )
+  (
+    input clk,  // clock
+    input rst,
+    output out,
+    output debug[16]
+  ) {
+
+  
+.clk(clk){
+   dff seed[16]; //don't reset the seed because we don't want the same random number each time we press reset
+    
+  .rst(rst){
+     pn_gen random_number;
+    }
+ }
+  
+sig temp_pointer[4];
+  
+always {
+    out = 0;
+    random_number.next = 1;
+    random_number.seed = seed.q;
+    temp_pointer = random_number.num[1:0];
+    debug = random_number.num[15:0];
+    
+    case(temp_pointer) {
+      b00: out = b00;
+      b01: out = b01;
+      b10: out = b10;
+      b11: out = b00;
+    }
+    
+    
+  }
+}
